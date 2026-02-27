@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KEYPASS — One key. Every drive.</title>
+  <meta name="description" content="KEYPASS ist kein Carsharing. Ein Membership Club für Menschen, die Automobile verstehen.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── TOKENS ───────────────────────────────────────── */
+    :root {
+      --white:   #FFFFFF;
+      --bg:      #F2F2F2;
+      --ink:     #000000;
+      --ink-mid: #1A1A1A;
+      --muted:   #6B6B6B;
+      --border:  #D8D8D8;
+      --green:   #173D2A;
+      --green-hi:#1E5435;
+      --green-d: #4CAA72;
+      --dark:    #0E0E0E;
+      --ease:    cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* ─── RESET ────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, Helvetica Neue, sans-serif;
+      background: var(--white);
+      color: var(--ink);
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+    ul { list-style: none; }
+    img, svg { display: block; }
+
+    /* ─── SCROLL REVEAL ────────────────────────────────── */
+    .r {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
+    }
+    .r.on { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.16s; }
+    .d3 { transition-delay: 0.24s; }
+    .d4 { transition-delay: 0.32s; }
+
+    /* ══════════════════════════════════════════════════════
+       HERO — Full-bleed cinematic, centered, hamburger nav
+    ══════════════════════════════════════════════════════ */
+    #hero {
+      position: relative;
+      height: 100svh;
+      min-height: 680px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--dark);
+    }
+
+    /* ── Background image ── */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('hero-car.jpg');
+      /* ↑ Place a Porsche 911 image as hero-car.jpg in this folder */
+      background-size: cover;
+      background-position: center 40%;
+      transform: scale(1.04);
+      transition: transform 8s ease-out;
+    }
+    .hero-bg.loaded { transform: scale(1); }
+
+    /* Fallback gradient if no image */
+    .hero-bg-fallback {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 60% 50%, rgba(23,61,42,0.18) 0%, transparent 70%),
+        linear-gradient(160deg, #111 0%, #0a0a0a 100%);
+      z-index: 0;
+    }
+
+    /* Overlay for text legibility — approved photography overlay per brand guidelines */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.45) 0%,
+        rgba(0,0,0,0.65) 40%,
+        rgba(0,0,0,0.85) 100%
+      );
+      z-index: 1;
+    }
+
+    /* ── Top bar ── */
+    .hero-topbar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 40px;
+    }
+
+    .hero-logo {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+    }
+    .hero-logo i { color: var(--green-d); font-style: normal; }
+
+    /* ── Hamburger button ── */
+    .ham-btn {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.22);
+      transition: border-color 0.3s;
+    }
+    .ham-btn:hover { border-color: rgba(255,255,255,0.6); }
+    .ham-btn span {
+      display: block;
+      width: 20px; height: 1px;
+      background: rgba(255,255,255,0.9);
+      transition: all 0.35s var(--ease);
+      transform-origin: center;
+    }
+    .ham-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .ham-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .ham-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── Full-screen nav overlay ── */
+    .fullmenu {
+      position: fixed;
+      inset: 0;
+      z-index: 800;
+      background: var(--dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 52px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease);
+    }
+    .fullmenu.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .fm-logo {
+      position: absolute;
+      top: 32px; left: 40px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+    .fm-logo i { color: var(--green-d); font-style: normal; }
+
+    .fm-close {
+      position: absolute;
+      top: 24px; right: 36px;
+      width: 44px; height: 44px;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.7);
+      font-size: 1.2rem;
+      font-weight: 300;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.3s;
+    }
+    .fm-close:hover { border-color: rgba(255,255,255,0.45); }
+
+    .fm-links {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .fm-links a {
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      color: rgba(255,255,255,0.85);
+      transition: color 0.3s, transform 0.3s var(--ease);
+      display: inline-block;
+    }
+    .fm-links a:hover { color: var(--green-d); transform: translateX(8px); }
+
+    .fm-bottom {
+      position: absolute;
+      bottom: 40px; left: 52px; right: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .fm-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: var(--green-d);
+      padding: 14px 28px;
+      transition: background 0.3s;
+    }
+    .fm-cta:hover { background: #5ec285; }
+    .fm-tagline {
+      font-size: 0.72rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.28);
+    }
+
+    /* ── Hero centered content ── */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 24px;
+      max-width: 960px;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--green-d);
+      margin-bottom: 28px;
+    }
+
+    .hero-h1 {
+      font-size: clamp(2.8rem, 6.5vw, 7.5rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    .hero-sub {
+      font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.02em;
+      line-height: 1.75;
+      max-width: 480px;
+      margin: 0 auto 44px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--green-d);
+      color: var(--dark);
+      padding: 16px 32px;
+      border: none;
+      transition: background 0.3s, transform 0.3s var(--ease);
+    }
+    .btn-primary:hover { background: #5ec285; transform: translateY(-2px); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: transparent;
+      color: rgba(255,255,255,0.8);
+      padding: 16px 32px;
+      border: 1px solid rgba(255,255,255,0.25);
+      transition: border-color 0.3s, color 0.3s, transform 0.3s var(--ease);
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.7); color: var(--white); transform: translateY(-2px); }
+
+    /* ── Hero bottom bar ── */
+    .hero-bottom {
+      position: absolute;
+      bottom: 32px; left: 40px; right: 40px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hero-tagline {
+      font-size: 0.65rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+    .hero-scroll {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.62rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+    .hero-scroll svg {
+      width: 14px; height: 14px;
+      animation: scrollBob 2s ease-in-out infinite;
+    }
+    @keyframes scrollBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
+    }
+
+    /* ══════════════════════════════════════════════════════
+       MARQUEE
+    ══════════════════════════════════════════════════════ */
+    #marquee {
+      background: var(--dark);
+      overflow: hidden;
+      padding: 14px 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: ticker 32s linear infinite;
+    }
+    .marquee-track span {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      padding: 0 36px;
+    }
+    .marquee-track span.hi { color: var(--green-d); }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* ══════════════════════════════════════════════════════
+       SHARED SECTION SHELL
+    ══════════════════════════════════════════════════════ */
+    .section { padding: 112px 52px; }
+
+    .sec-eyebrow {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .sec-h2 {
+      font-size: clamp(2rem, 3.5vw, 3.8rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.08;
+      color: var(--ink);
+    }
+    .sec-body {
+      font-size: 0.9rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--muted);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       STATS
+    ══════════════════════════════════════════════════════ */
+    #stats { background: var(--white); }
+
+    .stats-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 36px;
+      margin-bottom: 72px;
+    }
+    .stats-head .sec-eyebrow { margin-bottom: 0; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); }
+    .stat {
+      padding-right: 40px;
+      margin-right: 40px;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+    .stat-n {
+      font-size: clamp(3.2rem, 5vw, 5.8rem);
+      font-weight: 300;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      line-height: 1;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .stat-n sup { font-size: 0.35em; vertical-align: super; color: var(--green); font-weight: 400; }
+    .stat-lbl { font-size: 0.78rem; font-weight: 300; color: var(--muted); }
+
+    /* ══════════════════════════════════════════════════════
+       KONZEPT
+    ══════════════════════════════════════════════════════ */
+    #konzept { background: var(--bg); }
+
+    .konzept-head {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: end;
+      margin-bottom: 80px;
+    }
+    .konzept-head .sec-h2 { margin-top: 12px; }
+
+    .pillar-row {
+      display: grid;
+      grid-template-columns: 56px 1fr 1fr auto;
+      gap: 0 44px;
+      align-items: start;
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+    .pillar-row:last-child { border-bottom: 1px solid var(--border); }
+    .pillar-row:hover { background: rgba(255,255,255,0.7); }
+
+    .p-idx {
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: var(--green);
+      padding-top: 3px;
+      letter-spacing: 0.06em;
+    }
+    .p-name {
+      font-size: clamp(1rem, 1.4vw, 1.5rem);
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+    .p-desc { font-size: 0.86rem; font-weight: 300; line-height: 1.85; color: var(--muted); }
+    .p-tag-w { display: flex; justify-content: flex-end; }
+    .tag {
+      display: inline-block;
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--green);
+      border: 1px solid rgba(23,61,42,0.28);
+      padding: 5px 11px;
+      white-space: nowrap;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       STATEMENT
+    ══════════════════════════════════════════════════════ */
+    #statement {
+      background: var(--dark);
+      padding: 128px 52px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #statement::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(255,255,255,0.018) 79px, rgba(255,255,255,0.018) 80px),
+        repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,0.018) 79px, rgba(255,255,255,0.018) 80px);
+      pointer-events: none;
+    }
+    .stmt-inner { position: relative; z-index: 1; }
+    .stmt-line {
+      display: block;
+      font-size: clamp(2.6rem, 5.2vw, 6.5rem);
+      font-weight: 300;
+      letter-spacing: -0.028em;
+      line-height: 1.05;
+      color: rgba(255,255,255,0.88);
+    }
+    .stmt-line.accent { color: var(--green-d); }
+    .stmt-sub {
+      margin-top: 44px;
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.22);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       MEMBERSHIP
+    ══════════════════════════════════════════════════════ */
+    #membership { background: var(--white); }
+
+    .mem-head {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      gap: 40px;
+      margin-bottom: 72px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid var(--border);
+    }
+    .mem-head .sec-h2 { margin-top: 12px; }
+
+    .tiers { display: grid; grid-template-columns: 1fr 1.08fr 1fr; gap: 1px; background: var(--border); }
+    .tier {
+      background: var(--white);
+      padding: 48px 40px;
+      display: flex;
+      flex-direction: column;
+    }
+    .tier.hot {
+      background: var(--ink);
+      transform: translateY(-12px);
+      margin-bottom: -12px;
+    }
+    .tier.hot .tier-badge { color: var(--green-d); }
+    .tier.hot .tier-name { color: var(--white); }
+    .tier.hot .tier-val  { color: var(--white); }
+    .tier.hot .tier-unit { color: rgba(255,255,255,0.45); }
+    .tier.hot .tier-note { color: rgba(255,255,255,0.35); }
+    .tier.hot .tier-hr   { background: rgba(255,255,255,0.12); }
+    .tier.hot .feats li  { color: rgba(255,255,255,0.55); }
+    .tier.hot .feats li.hi { color: rgba(255,255,255,0.9); }
+    .tier.hot .feats li::before { color: var(--green-d); }
+
+    .tier-badge {
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+    .tier-name {
+      font-size: 1.7rem;
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .tier-price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 6px; }
+    .tier-val {
+      font-size: 3.2rem;
+      font-weight: 300;
+      color: var(--ink);
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .tier-unit { font-size: 0.8rem; color: var(--muted); font-weight: 300; }
+    .tier-note { font-size: 0.75rem; color: var(--muted); margin-bottom: 32px; }
+    .tier-hr { width: 100%; height: 1px; background: var(--border); margin: 28px 0; }
+
+    .feats { flex: 1; display: flex; flex-direction: column; gap: 11px; margin-bottom: 36px; }
+    .feats li {
+      display: flex; gap: 11px;
+      font-size: 0.82rem; font-weight: 300;
+      color: var(--muted); line-height: 1.5;
+    }
+    .feats li::before { content: '—'; color: var(--green); flex-shrink: 0; }
+    .feats li.hi { color: var(--ink); font-weight: 400; }
+
+    .tier-cta {
+      display: block; width: 100%;
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 13px 16px; text-align: center; border: none;
+      transition: all 0.3s var(--ease);
+    }
+    .tier-cta:hover { transform: translateY(-1px); }
+    .tc-outline { background: transparent; border: 1px solid var(--border); color: var(--ink); }
+    .tc-outline:hover { border-color: var(--green); color: var(--green); }
+    .tc-white { background: var(--white); color: var(--ink); border: 1px solid var(--white); }
+    .tc-white:hover { background: var(--bg); }
+
+    /* ══════════════════════════════════════════════════════
+       GARAGE
+    ══════════════════════════════════════════════════════ */
+    #garage { display: grid; grid-template-columns: 1fr 1fr; min-height: 640px; }
+
+    .garage-vis {
+      background: #141414;
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .garage-grid-bg {
+      position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255,255,255,0.03) 59px, rgba(255,255,255,0.03) 60px),
+        repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,0.03) 59px, rgba(255,255,255,0.03) 60px);
+    }
+    .garage-k {
+      position: relative; z-index: 1;
+      font-size: clamp(160px, 22vw, 300px);
+      font-weight: 300;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(76,170,114,0.18);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      user-select: none;
+    }
+
+    .garage-copy {
+      background: var(--dark);
+      padding: 88px 64px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .garage-copy .sec-eyebrow { color: var(--green-d); margin-bottom: 24px; }
+    .garage-q {
+      font-size: clamp(1.3rem, 1.9vw, 1.9rem);
+      font-weight: 300;
+      letter-spacing: -0.015em;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.45;
+      margin-bottom: 32px;
+      padding-left: 22px;
+      border-left: 2px solid var(--green-d);
+    }
+    .garage-body {
+      font-size: 0.86rem; font-weight: 300; line-height: 1.9;
+      color: rgba(255,255,255,0.42); margin-bottom: 14px;
+    }
+    .specs { display: flex; flex-direction: column; gap: 12px; margin-top: 36px; }
+    .spec {
+      display: flex; align-items: center; gap: 14px;
+      font-size: 0.76rem; letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.35);
+    }
+    .spec::before { content: ''; width: 14px; height: 1px; background: var(--green-d); flex-shrink: 0; }
+
+    /* ══════════════════════════════════════════════════════
+       WAITLIST
+    ══════════════════════════════════════════════════════ */
+    #waitlist { background: var(--bg); }
+
+    .wl-wrap { display: grid; grid-template-columns: 1fr 1.1fr; gap: 88px; align-items: start; }
+    .wl-left .sec-h2 { margin-top: 12px; margin-bottom: 18px; }
+    .wl-left .sec-body { margin-bottom: 36px; }
+
+    .wl-promise { display: flex; flex-direction: column; gap: 11px; }
+    .wl-pi {
+      display: flex; align-items: center; gap: 13px;
+      font-size: 0.8rem; font-weight: 300; color: var(--muted);
+    }
+    .wl-pi::before { content: ''; width: 14px; height: 1px; background: var(--green); flex-shrink: 0; }
+
+    /* Fields */
+    .fg { margin-bottom: 20px; }
+    .fg-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .lbl {
+      display: block;
+      font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 8px;
+    }
+    input[type="text"], input[type="email"], select {
+      width: 100%;
+      background: var(--white);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem; font-weight: 300;
+      padding: 13px 16px;
+      outline: none;
+      border-radius: 0; appearance: none; -webkit-appearance: none;
+      transition: border-color 0.3s;
+    }
+    input::placeholder { color: rgba(107,107,107,0.4); }
+    input:focus, select:focus { border-color: var(--green); }
+    input.err, select.err { border-color: #c04040; }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B6B6B' stroke-width='1.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center;
+      padding-right: 36px; cursor: pointer;
+    }
+    select option { background: var(--white); color: var(--ink); }
+    .err-msg { display: none; font-size: 0.67rem; color: #c04040; margin-top: 5px; }
+
+    .radios { display: flex; flex-direction: column; gap: 7px; }
+    .radio-row {
+      display: flex; align-items: center; gap: 13px;
+      padding: 12px 16px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      cursor: pointer; transition: border-color 0.3s;
+    }
+    .radio-row:hover { border-color: var(--ink); }
+    .radio-row:has(input:checked) { border-color: var(--green); }
+    .radio-row input[type="radio"] {
+      width: 15px; height: 15px; padding: 0;
+      appearance: none; -webkit-appearance: none;
+      border: 1px solid var(--border); border-radius: 50%;
+      flex-shrink: 0; position: relative; cursor: pointer;
+      transition: border-color 0.3s;
+    }
+    .radio-row input[type="radio"]:checked { border-color: var(--green); }
+    .radio-row input[type="radio"]:checked::after {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 5px; height: 5px; background: var(--green); border-radius: 50%;
+    }
+    .rtxt strong { display: block; font-size: 0.84rem; font-weight: 500; color: var(--ink); margin-bottom: 1px; }
+    .rtxt span   { font-size: 0.72rem; font-weight: 300; color: var(--muted); }
+
+    .btn-submit {
+      width: 100%; font-family: 'Inter', sans-serif;
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      background: var(--green); color: var(--white);
+      border: none; padding: 16px; margin-top: 28px;
+      cursor: pointer; transition: background 0.3s, transform 0.3s var(--ease);
+    }
+    .btn-submit:hover { background: var(--green-hi); transform: translateY(-2px); }
+    .form-fine { margin-top: 12px; font-size: 0.67rem; color: rgba(107,107,107,0.5); text-align: center; }
+
+    #form-ok {
+      display: none; opacity: 0; text-align: center; padding: 44px 20px;
+      transition: opacity 0.6s ease;
+    }
+    #form-ok.show { display: block; }
+    #form-ok.fade { opacity: 1; }
+    .ok-ring {
+      width: 54px; height: 54px; border: 1px solid var(--green);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 26px;
+    }
+    .ok-ring svg { width: 20px; height: 20px; stroke: var(--green); fill: none; stroke-width: 1.5; }
+    #form-ok h3 { font-size: 1.7rem; font-weight: 300; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 12px; }
+    #form-ok p  { font-size: 0.88rem; font-weight: 300; color: var(--muted); }
+
+    /* ══════════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════════ */
+    footer {
+      background: var(--dark); padding: 44px 52px;
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: center; gap: 24px;
+    }
+    .foot-logo {
+      font-size: 0.85rem; font-weight: 600;
+      letter-spacing: 0.38em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+    .foot-logo i { color: var(--green-d); font-style: normal; }
+    .foot-copy { font-size: 0.62rem; letter-spacing: 0.07em; color: rgba(255,255,255,0.2); text-align: center; }
+    .foot-soc { display: flex; gap: 24px; justify-content: flex-end; }
+    .foot-soc a {
+      font-size: 0.62rem; font-weight: 400;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.3); transition: color 0.3s;
+    }
+    .foot-soc a:hover { color: var(--green-d); }
+
+    /* ══════════════════════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .section, footer { padding-left: 36px; padding-right: 36px; }
+      #statement { padding-left: 36px; padding-right: 36px; }
+      .garage-copy { padding: 64px 44px; }
+      .wl-wrap { gap: 56px; }
+      .fullmenu { padding: 80px 36px; }
+      .fm-bottom { left: 36px; right: 36px; }
+    }
+
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2,1fr); gap: 40px; }
+      .stat { border-right: none; padding-right: 0; margin-right: 0; }
+      .stat:nth-child(odd) { border-right: 1px solid var(--border); padding-right: 40px; }
+      .stat:nth-child(1), .stat:nth-child(2) { padding-bottom: 40px; margin-bottom: 0; border-bottom: 1px solid var(--border); }
+
+      .konzept-head { grid-template-columns: 1fr; }
+      .mem-head { grid-template-columns: 1fr; }
+      .tiers { grid-template-columns: 1fr; gap: 2px; background: none; }
+      .tier { border: 1px solid var(--border); }
+      .tier.hot { transform: none; margin-bottom: 0; border-color: var(--green); }
+
+      #garage { grid-template-columns: 1fr; }
+      .garage-vis { min-height: 280px; }
+      .garage-copy { padding: 56px 36px; }
+
+      .wl-wrap { grid-template-columns: 1fr; gap: 52px; }
+      footer { grid-template-columns: 1fr 1fr; }
+      .foot-copy { display: none; }
+    }
+
+    @media (max-width: 680px) {
+      .hero-topbar { padding: 24px 24px; }
+      .hero-content { padding: 0 20px; }
+      .hero-bottom { left: 24px; right: 24px; }
+      .hero-h1 { font-size: clamp(2.4rem, 10vw, 3.5rem); }
+      .hero-ctas { flex-direction: column; }
+
+      .section, #statement { padding: 72px 24px; }
+      .fullmenu { padding: 80px 24px; }
+      .fm-bottom { left: 24px; right: 24px; flex-direction: column; align-items: flex-start; gap: 16px; }
+      .fm-logo { left: 24px; }
+      .fm-close { right: 20px; }
+
+      .pillar-row { grid-template-columns: 44px 1fr; grid-template-rows: auto auto auto; gap: 6px 18px; }
+      .p-desc { grid-column: 2; }
+      .p-tag-w { grid-column: 2; justify-content: flex-start; margin-top: 4px; }
+
+      .fg-2 { grid-template-columns: 1fr; gap: 0; }
+      footer { padding: 32px 24px; grid-template-columns: 1fr; gap: 16px; }
+      .foot-soc { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ FULLSCREEN MENU ════════════════════════════════ -->
+<nav class="fullmenu" id="fullmenu" aria-hidden="true">
+  <div class="fm-logo">KEY<i>PASS</i></div>
+  <button class="fm-close" id="fm-close" aria-label="Menü schließen">✕</button>
+  <div class="fm-links">
+    <a href="#konzept"   onclick="closeMenu()">Konzept</a>
+    <a href="#membership" onclick="closeMenu()">Membership</a>
+    <a href="#garage"    onclick="closeMenu()">Garage</a>
+    <a href="#waitlist"  onclick="closeMenu()">Kontakt</a>
+  </div>
+  <div class="fm-bottom">
+    <a href="#waitlist" class="fm-cta" onclick="closeMenu()">
+      Jetzt vormerken
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    <span class="fm-tagline">One key. Every drive.</span>
+  </div>
+</nav>
+
+
+<!-- ═══ HERO ═══════════════════════════════════════════ -->
+<section id="hero">
+  <!-- Background image — place your Porsche 911 photo as hero-car.jpg -->
+  <div class="hero-bg-fallback" aria-hidden="true"></div>
+  <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+
+  <!-- Top bar -->
+  <div class="hero-topbar">
+    <a href="#" class="hero-logo">KEY<i>PASS</i></a>
+    <button class="ham-btn" id="ham-btn" aria-label="Menü öffnen" aria-expanded="false" aria-controls="fullmenu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Centered content -->
+  <div class="hero-content">
+    <span class="hero-eyebrow">Premium Automotive Membership</span>
+    <h1 class="hero-h1">
+      Nicht jedes Auto<br>muss dir gehören.
+    </h1>
+    <p class="hero-sub">
+      KEYPASS ist kein Carsharing. Ein Membership Club für Menschen,
+      die Automobile verstehen — und denen ein Schlüssel zu allem genügt.
+    </p>
+    <div class="hero-ctas">
+      <a href="#waitlist" class="btn-primary">
+        Jetzt vormerken
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M2 12L12 2M12 2H5M12 2v7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#konzept" class="btn-secondary">Mehr erfahren</a>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="hero-bottom" aria-hidden="true">
+    <span class="hero-tagline">One key. Every drive.</span>
+    <span class="hero-scroll">
+      Scroll
+      <svg viewBox="0 0 14 14" fill="none">
+        <path d="M7 2v10M7 12l-4-4M7 12l4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  </div>
+</section>
+
+
+<!-- ═══ MARQUEE ════════════════════════════════════════ -->
+<div id="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>One Key</span><span class="hi">·</span>
+    <span>Every Drive</span><span class="hi">·</span>
+    <span>KEYPASS</span><span class="hi">·</span>
+    <span>Premium Membership</span><span class="hi">·</span>
+    <span>Munich 2025</span><span class="hi">·</span>
+    <span>One Key</span><span class="hi">·</span>
+    <span>Every Drive</span><span class="hi">·</span>
+    <span>KEYPASS</span><span class="hi">·</span>
+    <span>Premium Membership</span><span class="hi">·</span>
+    <span>Munich 2025</span><span class="hi">·</span>
+    <span>One Key</span><span class="hi">·</span>
+    <span>Every Drive</span><span class="hi">·</span>
+    <span>KEYPASS</span><span class="hi">·</span>
+    <span>Premium Membership</span><span class="hi">·</span>
+    <span>Munich 2025</span><span class="hi">·</span>
+    <span>One Key</span><span class="hi">·</span>
+    <span>Every Drive</span><span class="hi">·</span>
+    <span>KEYPASS</span><span class="hi">·</span>
+    <span>Premium Membership</span><span class="hi">·</span>
+    <span>Munich 2025</span><span class="hi">·</span>
+  </div>
+</div>
+
+
+<!-- ═══ STATS ══════════════════════════════════════════ -->
+<section id="stats" class="section">
+  <div class="stats-head">
+    <h2 class="sec-h2 r">Die Zahlen.</h2>
+    <span class="sec-eyebrow r d1">KEYPASS auf einen Blick</span>
+  </div>
+  <dl class="stats-grid">
+    <div class="stat r">
+      <dd class="stat-n"><span class="count" data-target="4">0</span></dd>
+      <dt class="stat-lbl">Produktsäulen</dt>
+    </div>
+    <div class="stat r d1">
+      <dd class="stat-n"><span class="count" data-target="3">0</span></dd>
+      <dt class="stat-lbl">Membership Tiers</dt>
+    </div>
+    <div class="stat r d2">
+      <dd class="stat-n"><span class="count" data-target="1">0</span></dd>
+      <dt class="stat-lbl">Stadt zum Start</dt>
+    </div>
+    <div class="stat r d3">
+      <dd class="stat-n">∞</dd>
+      <dt class="stat-lbl">Möglichkeiten</dt>
+    </div>
+  </dl>
+</section>
+
+
+<!-- ═══ KONZEPT ════════════════════════════════════════ -->
+<section id="konzept" class="section">
+  <div class="konzept-head">
+    <div>
+      <span class="sec-eyebrow r">Das Konzept</span>
+      <h2 class="sec-h2 r d1">Vier Säulen.<br>Ein Ökosystem.</h2>
+    </div>
+    <p class="sec-body r d2">KEYPASS verbindet digitale Infrastruktur mit physischer Präsenz — gebaut für die nächste Generation automobiler Enthusiasten.</p>
+  </div>
+
+  <div class="pillar-row r">
+    <span class="p-idx">01</span>
+    <h3 class="p-name">App &amp; Matching</h3>
+    <p class="p-desc">Eine intelligente Plattform, die Fahrzeuge mit Fahrern verbindet. Kein Suchen, kein Verhandeln — nur das richtige Auto zum richtigen Moment.</p>
+    <div class="p-tag-w"><span class="tag">Digital Platform</span></div>
+  </div>
+  <div class="pillar-row r d1">
+    <span class="p-idx">02</span>
+    <h3 class="p-name">Physische Garage</h3>
+    <p class="p-desc">Kein Parkhaus. Kein Lagerraum. Ein Ort für Enthusiasten — kuratierte Fahrzeuge, handverlesene Mitglieder, ein Raum, der nach Motoren riecht.</p>
+    <div class="p-tag-w"><span class="tag">Members Space</span></div>
+  </div>
+  <div class="pillar-row r d2">
+    <span class="p-idx">03</span>
+    <h3 class="p-name">Marktplatz</h3>
+    <p class="p-desc">Kaufen. Verkaufen. Tauschen. Ein exklusiver Marktplatz für Mitglieder — nur verifizierte Fahrzeuge, transparente Provenienz.</p>
+    <div class="p-tag-w"><span class="tag">Members Only</span></div>
+  </div>
+  <div class="pillar-row r d3">
+    <span class="p-idx">04</span>
+    <h3 class="p-name">Events &amp; Auktionen</h3>
+    <p class="p-desc">Vom Trackday bis zur geschlossenen Auktion seltener Fahrzeuge. Erlebnisse, die kein Geld allein kaufen kann — nur eine Mitgliedschaft.</p>
+    <div class="p-tag-w"><span class="tag">Exclusive Access</span></div>
+  </div>
+</section>
+
+
+<!-- ═══ STATEMENT ══════════════════════════════════════ -->
+<section id="statement">
+  <div class="stmt-inner">
+    <span class="stmt-line r">Ein Schlüssel.</span>
+    <span class="stmt-line accent r d1">Jede Möglichkeit.</span>
+    <p class="stmt-sub r d2">KEYPASS — Mainz, 2026</p>
+  </div>
+</section>
+
+
+<!-- ═══ MEMBERSHIP ═════════════════════════════════════ -->
+<section id="membership" class="section">
+  <div class="mem-head">
+    <div>
+      <span class="sec-eyebrow r">Membership</span>
+      <h2 class="sec-h2 r d1">Drei Tiers.<br>Eine Entscheidung.</h2>
+    </div>
+    <p class="sec-body r d2">Jedes Level ist für sich vollständig. Upgrade jederzeit ohne Kündigungsfristen.</p>
+  </div>
+
+  <div class="tiers r" role="list">
+    <article class="tier" role="listitem">
+      <p class="tier-badge">Einstieg</p>
+      <h3 class="tier-name">Digital</h3>
+      <div class="tier-price"><span class="tier-val">9</span><span class="tier-unit">€ / Monat</span></div>
+      <p class="tier-note">oder kostenlos via Warteliste</p>
+      <div class="tier-hr"></div>
+      <ul class="feats">
+        <li class="hi">App-Zugang &amp; Fahrzeugbrowsing</li>
+        <li>Intelligentes Matchmaking</li>
+        <li>Community-Bereich</li>
+        <li>Newsletter &amp; Early Access</li>
+        <li>Digitaler Marktplatz (Lesen)</li>
+      </ul>
+      <button class="tier-cta tc-outline" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Vormerken</button>
+    </article>
+
+    <article class="tier hot" role="listitem">
+      <p class="tier-badge">Beliebteste Wahl</p>
+      <h3 class="tier-name">Garage Member</h3>
+      <div class="tier-price"><span class="tier-val">299</span><span class="tier-unit">€ / Monat</span></div>
+      <p class="tier-note">Jahresabrechnung auf Anfrage</p>
+      <div class="tier-hr"></div>
+      <ul class="feats">
+        <li class="hi">Alles aus Digital</li>
+        <li class="hi">Physischer Garagenzugang</li>
+        <li>3 Fahrtage pro Monat</li>
+        <li>Marktplatz-Vollzugang</li>
+        <li>Event-Einladungen (Priority)</li>
+        <li>1 Fahrzeugeinstellung kostenlos</li>
+      </ul>
+      <button class="tier-cta tc-white" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Ich will dabei sein</button>
+    </article>
+
+    <article class="tier" role="listitem">
+      <p class="tier-badge">Vollzugang</p>
+      <h3 class="tier-name">Full Member</h3>
+      <div class="tier-price"><span class="tier-val">990</span><span class="tier-unit">€ / Monat</span></div>
+      <p class="tier-note">Limitiert — 50 Plätze gesamt</p>
+      <div class="tier-hr"></div>
+      <ul class="feats">
+        <li class="hi">Alles aus Garage Member</li>
+        <li class="hi">Unbegrenzte Fahrtage</li>
+        <li class="hi">Exklusive Auktions-Einladungen</li>
+        <li>Unbegrenzte Fahrzeugeinstellungen</li>
+        <li>Persönlicher Concierge</li>
+        <li>Geschlossene Member-Events</li>
+        <li>Named Parking Bay</li>
+      </ul>
+      <button class="tier-cta tc-outline" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Anfragen</button>
+    </article>
+  </div>
+</section>
+
+
+<!-- ═══ GARAGE ═════════════════════════════════════════ -->
+<section id="garage">
+  <div class="garage-vis" aria-hidden="true">
+    <div class="garage-grid-bg"></div>
+    <div class="garage-k r">K</div>
+  </div>
+  <div class="garage-copy">
+    <span class="sec-eyebrow r">Die Garage</span>
+    <blockquote class="garage-q r d1">
+      "Ein Raum, der nach Benzin, Leder und Möglichkeiten riecht."
+    </blockquote>
+    <p class="garage-body r d2">Die KEYPASS Garage ist kein Showroom. Sie ist der dritte Ort — zwischen Arbeit und Zuhause, zwischen Alltag und Adrenalin. Industrial verarbeitet, handverlesen bestückt.</p>
+    <p class="garage-body r d2">Mitglieder haben Zugang zu kuratierten Fahrzeugen, privaten Stellplätzen und einem Netzwerk Gleichgesinnter. Kein Termin. Kein Tourismus.</p>
+    <div class="specs r d3">
+      <div class="spec">Ausschließlich für verifizierte Mitglieder</div>
+      <div class="spec">Kuratierter Fahrzeugbestand — monatlich rotiert</div>
+      <div class="spec">Werkstatt, Lounge &amp; Event-Space</div>
+      <div class="spec">Startstadt: München — Q4 2025</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ WAITLIST ════════════════════════════════════════ -->
+<section id="waitlist" class="section">
+  <div class="wl-wrap">
+    <div class="wl-left">
+      <span class="sec-eyebrow r">Vormerken</span>
+      <h2 class="sec-h2 r d1">Werde Teil<br>des Clubs.</h2>
+      <p class="sec-body r d2">Begrenzte Plätze. Kein Spam. Keine Verpflichtungen. Nur ein ehrliches Signal deines Interesses.</p>
+      <div class="wl-promise r d3">
+        <div class="wl-pi">Keine Zahlungsdaten erforderlich</div>
+        <div class="wl-pi">Jederzeit abmeldbar</div>
+        <div class="wl-pi">Prioritätszugang für Early Members</div>
+      </div>
+    </div>
+
+    <div class="r d1">
+      <form id="wl-form" novalidate>
+        <div class="fg fg-2">
+          <div>
+            <label class="lbl" for="fn">Vorname</label>
+            <input type="text" id="fn" name="firstname" placeholder="Max" autocomplete="given-name">
+            <span class="err-msg" id="fn-err">Vorname erforderlich.</span>
+          </div>
+          <div>
+            <label class="lbl" for="ln">Nachname</label>
+            <input type="text" id="ln" name="lastname" placeholder="Mustermann" autocomplete="family-name">
+            <span class="err-msg" id="ln-err">Nachname erforderlich.</span>
+          </div>
+        </div>
+        <div class="fg">
+          <label class="lbl" for="em">E-Mail</label>
+          <input type="email" id="em" name="email" placeholder="max@beispiel.de" autocomplete="email">
+          <span class="err-msg" id="em-err">Gültige E-Mail erforderlich.</span>
+        </div>
+        <div class="fg">
+          <label class="lbl" for="veh">Fahrzeug vorhanden?</label>
+          <select id="veh" name="vehicle">
+            <option value="" disabled selected>Bitte auswählen…</option>
+            <option value="pkw">Ja — PKW</option>
+            <option value="moto">Ja — Motorrad</option>
+            <option value="both">Ja — beides</option>
+            <option value="no">Nein</option>
+          </select>
+          <span class="err-msg" id="veh-err">Bitte eine Option wählen.</span>
+        </div>
+        <div class="fg">
+          <label class="lbl">Interessantes Tier?</label>
+          <div class="radios" role="radiogroup">
+            <label class="radio-row">
+              <input type="radio" name="tier" value="digital">
+              <div class="rtxt"><strong>Digital</strong><span>Free / 9 € — App &amp; Community</span></div>
+            </label>
+            <label class="radio-row">
+              <input type="radio" name="tier" value="garage">
+              <div class="rtxt"><strong>Garage Member</strong><span>299 € — App + Garagenzugang</span></div>
+            </label>
+            <label class="radio-row">
+              <input type="radio" name="tier" value="full">
+              <div class="rtxt"><strong>Full Member</strong><span>990 € — Vollzugang, 50 Plätze</span></div>
+            </label>
+          </div>
+          <span class="err-msg" id="tier-err">Bitte ein Tier auswählen.</span>
+        </div>
+        <button type="submit" class="btn-submit">Ich will dabei sein</button>
+        <p class="form-fine">Keine Zahlungsdaten · Keine Verpflichtung</p>
+      </form>
+      <div id="form-ok" role="alert">
+        <div class="ok-ring">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h3>Du stehst auf der Liste.</h3>
+        <p>Wir melden uns, sobald KEYPASS startet.<br>Bis dahin — fahr gut.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ FOOTER ═════════════════════════════════════════ -->
+<footer>
+  <div class="foot-logo">KEY<i>PASS</i></div>
+  <p class="foot-copy">&copy; 2025 KEYPASS &mdash; One key. Every drive.</p>
+  <nav class="foot-soc" aria-label="Social">
+    <a href="#" aria-label="Instagram">Instagram</a>
+    <a href="#" aria-label="LinkedIn">LinkedIn</a>
+    <a href="#" aria-label="X">X / Twitter</a>
+  </nav>
+</footer>
+
+
+<!-- ═══ JS ═════════════════════════════════════════════ -->
+<script>
+  /* ── Hero image ── try to load hero-car.jpg, fade in if exists */
+  const heroBg = document.getElementById('hero-bg');
+  const testImg = new Image();
+  testImg.onload = () => {
+    heroBg.style.backgroundImage = "url('PCGB21_1359.jpg')";
+    setTimeout(() => heroBg.classList.add('loaded'), 100);
+  };
+  testImg.src = 'PCGB21_1359.jpg';
+
+  /* ── Hamburger / Fullscreen menu ── */
+  const hamBtn  = document.getElementById('ham-btn');
+  const fm      = document.getElementById('fullmenu');
+  const fmClose = document.getElementById('fm-close');
+
+  function openMenu() {
+    fm.classList.add('open');
+    fm.setAttribute('aria-hidden', 'false');
+    hamBtn.classList.add('open');
+    hamBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    fm.classList.remove('open');
+    fm.setAttribute('aria-hidden', 'true');
+    hamBtn.classList.remove('open');
+    hamBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamBtn.addEventListener('click', () => fm.classList.contains('open') ? closeMenu() : openMenu());
+  fmClose.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+  /* ── Scroll Reveal ── */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
+  document.querySelectorAll('.r').forEach(el => io.observe(el));
+
+  /* ── Count-up ── */
+  const co = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target, end = +el.dataset.target, t0 = performance.now(), dur = 1100;
+      const tick = t => {
+        const p = Math.min((t - t0) / dur, 1);
+        el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * end);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      co.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.count').forEach(el => co.observe(el));
+
+  /* ── Form ── */
+  const form = document.getElementById('wl-form');
+  const formOk = document.getElementById('form-ok');
+  const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+  function setErr(el, id, show) {
+    el.classList.toggle('err', show);
+    const m = document.getElementById(id);
+    if (m) m.style.display = show ? 'block' : 'none';
+  }
+
+  ['fn','ln'].forEach(id => {
+    document.getElementById(id).addEventListener('blur', function() { setErr(this, id+'-err', !this.value.trim()); });
+  });
+  document.getElementById('em').addEventListener('blur', function() { setErr(this,'em-err',!isEmail(this.value.trim())); });
+  document.getElementById('veh').addEventListener('change', function() { setErr(this,'veh-err',!this.value); });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const fn=document.getElementById('fn'), ln=document.getElementById('ln'),
+          em=document.getElementById('em'), veh=document.getElementById('veh'),
+          tier=form.querySelector('input[name="tier"]:checked'),
+          tierErr=document.getElementById('tier-err');
+    let ok=true;
+    if (!fn.value.trim())          { setErr(fn,'fn-err',true);  ok=false; } else setErr(fn,'fn-err',false);
+    if (!ln.value.trim())          { setErr(ln,'ln-err',true);  ok=false; } else setErr(ln,'ln-err',false);
+    if (!isEmail(em.value.trim())) { setErr(em,'em-err',true);  ok=false; } else setErr(em,'em-err',false);
+    if (!veh.value)                { setErr(veh,'veh-err',true);ok=false; } else setErr(veh,'veh-err',false);
+    tierErr.style.display = tier ? 'none' : 'block';
+    if (!tier) ok=false;
+    if (!ok) return;
+    form.style.cssText = 'opacity:0;transition:opacity 0.4s ease;pointer-events:none;';
+    setTimeout(() => {
+      form.style.display='none';
+      formOk.classList.add('show');
+      requestAnimationFrame(()=>requestAnimationFrame(()=>formOk.classList.add('fade')));
+    }, 420);
+  });
+</script>
+</body>
+</html>
