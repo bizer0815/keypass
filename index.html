@@ -25,7 +25,7 @@
       --ease:    cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    /* ─── RESET ────────────────────────────────────────── */
+    /* ─── RESET ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -42,7 +42,7 @@
     ul { list-style: none; }
     img, svg { display: block; }
 
-    /* ─── SCROLL REVEAL ────────────────────────────────── */
+    /* ─── SCROLL REVEAL ─────────────────────────────────── */
     .r {
       opacity: 0;
       transform: translateY(18px);
@@ -55,7 +55,7 @@
     .d4 { transition-delay: 0.32s; }
 
     /* ══════════════════════════════════════════════════════
-       HERO — Full-bleed cinematic, centered, hamburger nav
+       HERO
     ══════════════════════════════════════════════════════ */
     #hero {
       position: relative;
@@ -69,20 +69,19 @@
       background: var(--dark);
     }
 
-    /* ── Background image ── */
     .hero-bg {
       position: absolute;
       inset: 0;
-      background-image: url('hero-car.jpg');
-      /* ↑ Place a Porsche 911 image as hero-car.jpg in this folder */
+      background-image: url('PCGB21_1359.jpg');
       background-size: cover;
       background-position: center 40%;
-      transform: scale(1.04);
-      transition: transform 8s ease-out;
+      transform: scale(1.08) translateY(0);
+      opacity: 0;
+      transition: opacity 1.2s ease;
+      will-change: transform;
     }
-    .hero-bg.loaded { transform: scale(1); }
+    .hero-bg.loaded { opacity: 1; }
 
-    /* Fallback gradient if no image */
     .hero-bg-fallback {
       position: absolute;
       inset: 0;
@@ -92,20 +91,18 @@
       z-index: 0;
     }
 
-    /* Overlay for text legibility — approved photography overlay per brand guidelines */
     .hero-overlay {
       position: absolute;
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(0,0,0,0.45) 0%,
-        rgba(0,0,0,0.65) 40%,
-        rgba(0,0,0,0.85) 100%
+        rgba(0,0,0,0.35) 0%,
+        rgba(0,0,0,0.55) 40%,
+        rgba(0,0,0,0.82) 100%
       );
       z-index: 1;
     }
 
-    /* ── Top bar ── */
     .hero-topbar {
       position: absolute;
       top: 0; left: 0; right: 0;
@@ -125,14 +122,10 @@
     }
     .hero-logo i { color: var(--green-d); font-style: normal; }
 
-    /* ── Hamburger button ── */
     .ham-btn {
-      width: 44px;
-      height: 44px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      width: 44px; height: 44px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
       gap: 6px;
       background: none;
       border: 1px solid rgba(255,255,255,0.22);
@@ -164,18 +157,13 @@
       pointer-events: none;
       transition: opacity 0.4s var(--ease);
     }
-    .fullmenu.open {
-      opacity: 1;
-      pointer-events: all;
-    }
+    .fullmenu.open { opacity: 1; pointer-events: all; }
 
     .fm-logo {
       position: absolute;
       top: 32px; left: 40px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
+      font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.4em; text-transform: uppercase;
       color: rgba(255,255,255,0.6);
     }
     .fm-logo i { color: var(--green-d); font-style: normal; }
@@ -187,18 +175,13 @@
       background: none;
       border: 1px solid rgba(255,255,255,0.14);
       color: rgba(255,255,255,0.7);
-      font-size: 1.2rem;
-      font-weight: 300;
+      font-size: 1.2rem; font-weight: 300;
       display: flex; align-items: center; justify-content: center;
       transition: border-color 0.3s;
     }
     .fm-close:hover { border-color: rgba(255,255,255,0.45); }
 
-    .fm-links {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+    .fm-links { display: flex; flex-direction: column; gap: 4px; }
     .fm-links a {
       font-size: clamp(2.4rem, 5vw, 4.5rem);
       font-weight: 300;
@@ -212,32 +195,23 @@
     .fm-bottom {
       position: absolute;
       bottom: 40px; left: 52px; right: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
     }
     .fm-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--dark);
-      background: var(--green-d);
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--dark); background: var(--green-d);
       padding: 14px 28px;
       transition: background 0.3s;
     }
     .fm-cta:hover { background: #5ec285; }
     .fm-tagline {
-      font-size: 0.72rem;
-      font-weight: 300;
+      font-size: 0.72rem; font-weight: 300;
       letter-spacing: 0.1em;
       color: rgba(255,255,255,0.28);
     }
 
-    /* ── Hero centered content ── */
     .hero-content {
       position: relative;
       z-index: 2;
@@ -248,10 +222,8 @@
 
     .hero-eyebrow {
       display: inline-block;
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
+      font-size: 0.65rem; font-weight: 500;
+      letter-spacing: 0.35em; text-transform: uppercase;
       color: var(--green-d);
       margin-bottom: 28px;
     }
@@ -276,69 +248,47 @@
     }
 
     .hero-ctas {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      justify-content: center;
+      display: flex; gap: 12px;
+      align-items: center; justify-content: center;
       flex-wrap: wrap;
     }
 
     .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      background: var(--green-d);
-      color: var(--dark);
-      padding: 16px 32px;
-      border: none;
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      background: var(--green-d); color: var(--dark);
+      padding: 16px 32px; border: none;
       transition: background 0.3s, transform 0.3s var(--ease);
     }
     .btn-primary:hover { background: #5ec285; transform: translateY(-2px); }
 
     .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.72rem;
-      font-weight: 400;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      background: transparent;
-      color: rgba(255,255,255,0.8);
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.72rem; font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      background: transparent; color: rgba(255,255,255,0.8);
       padding: 16px 32px;
       border: 1px solid rgba(255,255,255,0.25);
       transition: border-color 0.3s, color 0.3s, transform 0.3s var(--ease);
     }
     .btn-secondary:hover { border-color: rgba(255,255,255,0.7); color: var(--white); transform: translateY(-2px); }
 
-    /* ── Hero bottom bar ── */
     .hero-bottom {
       position: absolute;
       bottom: 32px; left: 40px; right: 40px;
       z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
     }
     .hero-tagline {
-      font-size: 0.65rem;
-      font-weight: 300;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      font-size: 0.65rem; font-weight: 300;
+      letter-spacing: 0.2em; text-transform: uppercase;
       color: rgba(255,255,255,0.3);
     }
     .hero-scroll {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.62rem;
-      font-weight: 400;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.62rem; font-weight: 400;
+      letter-spacing: 0.2em; text-transform: uppercase;
       color: rgba(255,255,255,0.3);
     }
     .hero-scroll svg {
@@ -347,7 +297,7 @@
     }
     @keyframes scrollBob {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(4px); }
+      50%       { transform: translateY(4px); }
     }
 
     /* ══════════════════════════════════════════════════════
@@ -365,10 +315,8 @@
       animation: ticker 32s linear infinite;
     }
     .marquee-track span {
-      font-size: 0.62rem;
-      font-weight: 500;
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
+      font-size: 0.62rem; font-weight: 500;
+      letter-spacing: 0.32em; text-transform: uppercase;
       color: rgba(255,255,255,0.28);
       padding: 0 36px;
     }
@@ -381,10 +329,8 @@
     .section { padding: 112px 52px; }
 
     .sec-eyebrow {
-      font-size: 0.62rem;
-      font-weight: 500;
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
+      font-size: 0.62rem; font-weight: 500;
+      letter-spacing: 0.32em; text-transform: uppercase;
       color: var(--green);
       margin-bottom: 16px;
       display: block;
@@ -397,8 +343,7 @@
       color: var(--ink);
     }
     .sec-body {
-      font-size: 0.9rem;
-      font-weight: 300;
+      font-size: 0.9rem; font-weight: 300;
       line-height: 1.85;
       color: var(--muted);
     }
@@ -409,30 +354,23 @@
     #stats { background: var(--white); }
 
     .stats-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
+      display: flex; justify-content: space-between; align-items: flex-end;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 36px;
-      margin-bottom: 72px;
+      padding-bottom: 36px; margin-bottom: 72px;
     }
     .stats-head .sec-eyebrow { margin-bottom: 0; }
 
     .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); }
     .stat {
-      padding-right: 40px;
-      margin-right: 40px;
+      padding-right: 40px; margin-right: 40px;
       border-right: 1px solid var(--border);
     }
     .stat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
     .stat-n {
       font-size: clamp(3.2rem, 5vw, 5.8rem);
-      font-weight: 300;
-      letter-spacing: -0.04em;
-      color: var(--ink);
-      line-height: 1;
-      display: block;
-      margin-bottom: 10px;
+      font-weight: 300; letter-spacing: -0.04em;
+      color: var(--ink); line-height: 1;
+      display: block; margin-bottom: 10px;
     }
     .stat-n sup { font-size: 0.35em; vertical-align: super; color: var(--green); font-weight: 400; }
     .stat-lbl { font-size: 0.78rem; font-weight: 300; color: var(--muted); }
@@ -443,19 +381,15 @@
     #konzept { background: var(--bg); }
 
     .konzept-head {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      align-items: end;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 40px; align-items: end;
       margin-bottom: 80px;
     }
     .konzept-head .sec-h2 { margin-top: 12px; }
 
     .pillar-row {
-      display: grid;
-      grid-template-columns: 56px 1fr 1fr auto;
-      gap: 0 44px;
-      align-items: start;
+      display: grid; grid-template-columns: 56px 1fr 1fr auto;
+      gap: 0 44px; align-items: start;
       padding: 32px 0;
       border-top: 1px solid var(--border);
       transition: background 0.3s;
@@ -463,32 +397,17 @@
     .pillar-row:last-child { border-bottom: 1px solid var(--border); }
     .pillar-row:hover { background: rgba(255,255,255,0.7); }
 
-    .p-idx {
-      font-size: 0.72rem;
-      font-weight: 400;
-      color: var(--green);
-      padding-top: 3px;
-      letter-spacing: 0.06em;
-    }
-    .p-name {
-      font-size: clamp(1rem, 1.4vw, 1.5rem);
-      font-weight: 500;
-      color: var(--ink);
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-    }
+    .p-idx { font-size: 0.72rem; font-weight: 400; color: var(--green); padding-top: 3px; letter-spacing: 0.06em; }
+    .p-name { font-size: clamp(1rem, 1.4vw, 1.5rem); font-weight: 500; color: var(--ink); letter-spacing: -0.01em; line-height: 1.2; }
     .p-desc { font-size: 0.86rem; font-weight: 300; line-height: 1.85; color: var(--muted); }
     .p-tag-w { display: flex; justify-content: flex-end; }
     .tag {
       display: inline-block;
-      font-size: 0.58rem;
-      font-weight: 500;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
+      font-size: 0.58rem; font-weight: 500;
+      letter-spacing: 0.24em; text-transform: uppercase;
       color: var(--green);
       border: 1px solid rgba(23,61,42,0.28);
-      padding: 5px 11px;
-      white-space: nowrap;
+      padding: 5px 11px; white-space: nowrap;
     }
 
     /* ══════════════════════════════════════════════════════
@@ -514,18 +433,129 @@
       display: block;
       font-size: clamp(2.6rem, 5.2vw, 6.5rem);
       font-weight: 300;
-      letter-spacing: -0.028em;
-      line-height: 1.05;
+      letter-spacing: -0.028em; line-height: 1.05;
       color: rgba(255,255,255,0.88);
     }
     .stmt-line.accent { color: var(--green-d); }
     .stmt-sub {
       margin-top: 44px;
-      font-size: 0.62rem;
-      font-weight: 500;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
+      font-size: 0.62rem; font-weight: 500;
+      letter-spacing: 0.3em; text-transform: uppercase;
       color: rgba(255,255,255,0.22);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       FLOTTE
+    ══════════════════════════════════════════════════════ */
+    #flotte {
+      background: transparent;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    /* White header band — creates hard cut from dark Statement above */
+    .flotte-head {
+      background: var(--white);
+      padding: 96px 52px 80px;
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .flotte-head .sec-eyebrow { color: var(--green); margin-bottom: 12px; }
+    .flotte-head .sec-h2 { color: var(--ink); }
+
+    .flotte-hint {
+      font-size: 0.6rem; font-weight: 300;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted);
+      display: flex; align-items: center; gap: 10px;
+      flex-shrink: 0; align-self: flex-end; margin-bottom: 6px;
+    }
+    .flotte-hint svg { width: 20px; height: 14px; stroke: var(--muted); }
+
+    /* Dark gallery strip — no top/bottom padding, cards fill edge to edge */
+    .fleet-scroll {
+      display: flex; gap: 2px;
+      padding: 0 52px;
+      background: var(--dark);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -ms-overflow-style: none; scrollbar-width: none;
+      cursor: grab;
+    }
+    .fleet-scroll:active { cursor: grabbing; }
+    .fleet-scroll::-webkit-scrollbar { display: none; }
+
+    .fleet-card {
+      flex: 0 0 380px;
+      height: 520px;
+      position: relative;
+      overflow: hidden;
+      scroll-snap-align: start;
+      background: #141414;
+      transition: flex-basis 0.55s var(--ease);
+    }
+
+    /* ── Accordion hover: hovered card expands, others shrink ── */
+    .fleet-scroll:has(.fleet-card:hover) .fleet-card {
+      flex-basis: 260px;
+    }
+    .fleet-scroll:has(.fleet-card:hover) .fleet-card:hover {
+      flex-basis: 560px;
+    }
+
+    .fleet-card-img {
+      position: absolute;
+      top: -8%; bottom: -8%; left: 0; right: 0; /* overscan crops baked-in letterbox bars */
+      background-size: cover;
+      background-position: center 40%;
+      filter: brightness(0.68);
+      transition: filter 0.55s var(--ease), transform 0.65s var(--ease);
+    }
+    /* Dimm non-hovered cards when one is active */
+    .fleet-scroll:has(.fleet-card:hover) .fleet-card:not(:hover) .fleet-card-img {
+      filter: brightness(0.42);
+    }
+    .fleet-card:hover .fleet-card-img {
+      filter: brightness(0.92);
+      transform: scale(1.06);
+    }
+
+    .fleet-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
+    }
+
+    .fleet-card-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 32px;
+      transition: opacity 0.35s var(--ease), transform 0.45s var(--ease);
+    }
+    /* Info slides up slightly on hover */
+    .fleet-card:hover .fleet-card-info {
+      transform: translateY(-8px);
+    }
+    /* Fade info on non-hovered cards */
+    .fleet-scroll:has(.fleet-card:hover) .fleet-card:not(:hover) .fleet-card-info {
+      opacity: 0.4;
+    }
+
+    .fleet-car-number {
+      font-size: 0.58rem; font-weight: 500;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--green-d); margin-bottom: 10px; display: block;
+    }
+    .fleet-car-name {
+      font-size: 1.25rem; font-weight: 300;
+      color: var(--white); letter-spacing: -0.015em;
+      line-height: 1.25; margin-bottom: 8px;
+    }
+    .fleet-car-spec {
+      font-size: 0.7rem; font-weight: 300;
+      color: rgba(255,255,255,0.38); letter-spacing: 0.06em;
+      transition: color 0.35s var(--ease);
+    }
+    .fleet-card:hover .fleet-car-spec {
+      color: rgba(255,255,255,0.72);
     }
 
     /* ══════════════════════════════════════════════════════
@@ -534,13 +564,10 @@
     #membership { background: var(--white); }
 
     .mem-head {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: end;
-      gap: 40px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: end; gap: 40px;
       margin-bottom: 72px;
-      padding-bottom: 36px;
-      border-bottom: 1px solid var(--border);
+      padding-bottom: 36px; border-bottom: 1px solid var(--border);
     }
     .mem-head .sec-h2 { margin-top: 12px; }
 
@@ -548,8 +575,7 @@
     .tier {
       background: var(--white);
       padding: 48px 40px;
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
     }
     .tier.hot {
       background: var(--ink);
@@ -557,48 +583,25 @@
       margin-bottom: -12px;
     }
     .tier.hot .tier-badge { color: var(--green-d); }
-    .tier.hot .tier-name { color: var(--white); }
-    .tier.hot .tier-val  { color: var(--white); }
-    .tier.hot .tier-unit { color: rgba(255,255,255,0.45); }
-    .tier.hot .tier-note { color: rgba(255,255,255,0.35); }
-    .tier.hot .tier-hr   { background: rgba(255,255,255,0.12); }
-    .tier.hot .feats li  { color: rgba(255,255,255,0.55); }
-    .tier.hot .feats li.hi { color: rgba(255,255,255,0.9); }
+    .tier.hot .tier-name  { color: var(--white); }
+    .tier.hot .tier-val   { color: var(--white); }
+    .tier.hot .tier-unit  { color: rgba(255,255,255,0.45); }
+    .tier.hot .tier-note  { color: rgba(255,255,255,0.35); }
+    .tier.hot .tier-hr    { background: rgba(255,255,255,0.12); }
+    .tier.hot .feats li   { color: rgba(255,255,255,0.55); }
+    .tier.hot .feats li.hi{ color: rgba(255,255,255,0.9); }
     .tier.hot .feats li::before { color: var(--green-d); }
 
-    .tier-badge {
-      font-size: 0.58rem;
-      font-weight: 500;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--green);
-      margin-bottom: 6px;
-    }
-    .tier-name {
-      font-size: 1.7rem;
-      font-weight: 400;
-      color: var(--ink);
-      letter-spacing: -0.02em;
-      margin-bottom: 24px;
-    }
+    .tier-badge { font-size: 0.58rem; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; color: var(--green); margin-bottom: 6px; }
+    .tier-name  { font-size: 1.7rem; font-weight: 400; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 24px; }
     .tier-price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 6px; }
-    .tier-val {
-      font-size: 3.2rem;
-      font-weight: 300;
-      color: var(--ink);
-      letter-spacing: -0.04em;
-      line-height: 1;
-    }
-    .tier-unit { font-size: 0.8rem; color: var(--muted); font-weight: 300; }
-    .tier-note { font-size: 0.75rem; color: var(--muted); margin-bottom: 32px; }
-    .tier-hr { width: 100%; height: 1px; background: var(--border); margin: 28px 0; }
+    .tier-val   { font-size: 3.2rem; font-weight: 300; color: var(--ink); letter-spacing: -0.04em; line-height: 1; }
+    .tier-unit  { font-size: 0.8rem; color: var(--muted); font-weight: 300; }
+    .tier-note  { font-size: 0.75rem; color: var(--muted); margin-bottom: 32px; }
+    .tier-hr    { width: 100%; height: 1px; background: var(--border); margin: 28px 0; }
 
     .feats { flex: 1; display: flex; flex-direction: column; gap: 11px; margin-bottom: 36px; }
-    .feats li {
-      display: flex; gap: 11px;
-      font-size: 0.82rem; font-weight: 300;
-      color: var(--muted); line-height: 1.5;
-    }
+    .feats li { display: flex; gap: 11px; font-size: 0.82rem; font-weight: 300; color: var(--muted); line-height: 1.5; }
     .feats li::before { content: '—'; color: var(--green); flex-shrink: 0; }
     .feats li.hi { color: var(--ink); font-weight: 400; }
 
@@ -616,14 +619,100 @@
     .tc-white:hover { background: var(--bg); }
 
     /* ══════════════════════════════════════════════════════
+       FOUNDER — Editorial Light (Kinfolk/Monocle Style)
+    ══════════════════════════════════════════════════════ */
+    #founder { background: var(--white); }
+
+    .founder-inner {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 96px;
+      align-items: start;
+    }
+
+    /* Portrait photo — tall 3:4 container */
+    .founder-photo {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    .founder-img-inner {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center top;
+      opacity: 0;
+      transition: opacity 1s ease, transform 0.8s var(--ease);
+    }
+    .founder-photo:hover .founder-img-inner { transform: scale(1.03); }
+
+    .founder-placeholder {
+      position: absolute; inset: 0;
+      background: #ECEAE6;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .founder-placeholder-txt {
+      font-size: 0.58rem; font-weight: 400;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: rgba(0,0,0,0.18);
+      text-align: center; line-height: 2.4;
+    }
+
+    /* Text side */
+    .founder-text {
+      padding-top: 12px;
+      display: flex; flex-direction: column;
+    }
+    .founder-eyebrow {
+      font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 36px; display: block;
+    }
+    .founder-quote {
+      font-size: clamp(1.5rem, 2.4vw, 2.8rem);
+      font-weight: 300;
+      letter-spacing: -0.028em;
+      line-height: 1.2;
+      color: var(--ink);
+      margin-bottom: 40px;
+    }
+    .founder-bio {
+      font-size: 0.9rem; font-weight: 300;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 48px;
+      max-width: 520px;
+    }
+    .founder-sig {
+      display: flex; align-items: center; gap: 20px;
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+    }
+    .founder-sig-line {
+      width: 32px; height: 1px;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+    .founder-name {
+      font-size: 0.9rem; font-weight: 500;
+      color: var(--ink); letter-spacing: 0.06em;
+    }
+    .founder-role {
+      font-size: 0.7rem; font-weight: 300;
+      color: var(--muted); letter-spacing: 0.06em;
+      margin-top: 3px;
+    }
+
+    /* ══════════════════════════════════════════════════════
        GARAGE
     ══════════════════════════════════════════════════════ */
     #garage { display: grid; grid-template-columns: 1fr 1fr; min-height: 640px; }
 
     .garage-vis {
       background: #141414;
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
       display: flex; align-items: center; justify-content: center;
     }
     .garage-grid-bg {
@@ -635,14 +724,11 @@
     .garage-k {
       position: relative; z-index: 1;
       font-size: clamp(160px, 22vw, 300px);
-      font-weight: 300;
-      color: transparent;
+      font-weight: 300; color: transparent;
       -webkit-text-stroke: 1px rgba(76,170,114,0.18);
-      line-height: 1;
-      letter-spacing: -0.04em;
+      line-height: 1; letter-spacing: -0.04em;
       user-select: none;
     }
-
     .garage-copy {
       background: var(--dark);
       padding: 88px 64px;
@@ -651,13 +737,10 @@
     .garage-copy .sec-eyebrow { color: var(--green-d); margin-bottom: 24px; }
     .garage-q {
       font-size: clamp(1.3rem, 1.9vw, 1.9rem);
-      font-weight: 300;
-      letter-spacing: -0.015em;
-      color: rgba(255,255,255,0.88);
-      line-height: 1.45;
+      font-weight: 300; letter-spacing: -0.015em;
+      color: rgba(255,255,255,0.88); line-height: 1.45;
       margin-bottom: 32px;
-      padding-left: 22px;
-      border-left: 2px solid var(--green-d);
+      padding-left: 22px; border-left: 2px solid var(--green-d);
     }
     .garage-body {
       font-size: 0.86rem; font-weight: 300; line-height: 1.9;
@@ -677,8 +760,8 @@
     #waitlist { background: var(--bg); }
 
     .wl-wrap { display: grid; grid-template-columns: 1fr 1.1fr; gap: 88px; align-items: start; }
-    .wl-left .sec-h2 { margin-top: 12px; margin-bottom: 18px; }
-    .wl-left .sec-body { margin-bottom: 36px; }
+    .wl-left .sec-h2  { margin-top: 12px; margin-bottom: 18px; }
+    .wl-left .sec-body{ margin-bottom: 36px; }
 
     .wl-promise { display: flex; flex-direction: column; gap: 11px; }
     .wl-pi {
@@ -687,7 +770,6 @@
     }
     .wl-pi::before { content: ''; width: 14px; height: 1px; background: var(--green); flex-shrink: 0; }
 
-    /* Fields */
     .fg { margin-bottom: 20px; }
     .fg-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .lbl {
@@ -698,13 +780,10 @@
     }
     input[type="text"], input[type="email"], select {
       width: 100%;
-      background: var(--white);
-      border: 1px solid var(--border);
-      color: var(--ink);
-      font-family: 'Inter', sans-serif;
+      background: var(--white); border: 1px solid var(--border);
+      color: var(--ink); font-family: 'Inter', sans-serif;
       font-size: 0.9rem; font-weight: 300;
-      padding: 13px 16px;
-      outline: none;
+      padding: 13px 16px; outline: none;
       border-radius: 0; appearance: none; -webkit-appearance: none;
       transition: border-color 0.3s;
     }
@@ -723,8 +802,7 @@
     .radios { display: flex; flex-direction: column; gap: 7px; }
     .radio-row {
       display: flex; align-items: center; gap: 13px;
-      padding: 12px 16px;
-      background: var(--white);
+      padding: 12px 16px; background: var(--white);
       border: 1px solid var(--border);
       cursor: pointer; transition: border-color 0.3s;
     }
@@ -780,14 +858,10 @@
       display: grid; grid-template-columns: 1fr auto 1fr;
       align-items: center; gap: 24px;
     }
-    .foot-logo {
-      font-size: 0.85rem; font-weight: 600;
-      letter-spacing: 0.38em; text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
-    }
+    .foot-logo { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.38em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
     .foot-logo i { color: var(--green-d); font-style: normal; }
-    .foot-copy { font-size: 0.62rem; letter-spacing: 0.07em; color: rgba(255,255,255,0.2); text-align: center; }
-    .foot-soc { display: flex; gap: 24px; justify-content: flex-end; }
+    .foot-copy  { font-size: 0.62rem; letter-spacing: 0.07em; color: rgba(255,255,255,0.2); text-align: center; }
+    .foot-soc   { display: flex; gap: 24px; justify-content: flex-end; }
     .foot-soc a {
       font-size: 0.62rem; font-weight: 400;
       letter-spacing: 0.2em; text-transform: uppercase;
@@ -805,13 +879,16 @@
       .wl-wrap { gap: 56px; }
       .fullmenu { padding: 80px 36px; }
       .fm-bottom { left: 36px; right: 36px; }
+      .flotte-head { padding: 0 36px; }
+      .fleet-scroll { padding: 0 36px; }
+      .founder-copy { padding: 64px 44px; }
     }
 
     @media (max-width: 900px) {
       .stats-grid { grid-template-columns: repeat(2,1fr); gap: 40px; }
       .stat { border-right: none; padding-right: 0; margin-right: 0; }
       .stat:nth-child(odd) { border-right: 1px solid var(--border); padding-right: 40px; }
-      .stat:nth-child(1), .stat:nth-child(2) { padding-bottom: 40px; margin-bottom: 0; border-bottom: 1px solid var(--border); }
+      .stat:nth-child(1), .stat:nth-child(2) { padding-bottom: 40px; border-bottom: 1px solid var(--border); }
 
       .konzept-head { grid-template-columns: 1fr; }
       .mem-head { grid-template-columns: 1fr; }
@@ -823,13 +900,20 @@
       .garage-vis { min-height: 280px; }
       .garage-copy { padding: 56px 36px; }
 
+      .founder-inner { grid-template-columns: 1fr; gap: 48px; }
+      .founder-photo { aspect-ratio: 4 / 3; max-width: 100%; }
+
       .wl-wrap { grid-template-columns: 1fr; gap: 52px; }
       footer { grid-template-columns: 1fr 1fr; }
       .foot-copy { display: none; }
+
+      .fleet-card { flex: 0 0 300px; height: 420px; }
+      .flotte-hint { display: none; }
+      .flotte-head { flex-direction: column; align-items: flex-start; gap: 16px; padding: 72px 36px 60px; }
     }
 
     @media (max-width: 680px) {
-      .hero-topbar { padding: 24px 24px; }
+      .hero-topbar { padding: 24px; }
       .hero-content { padding: 0 20px; }
       .hero-bottom { left: 24px; right: 24px; }
       .hero-h1 { font-size: clamp(2.4rem, 10vw, 3.5rem); }
@@ -842,12 +926,18 @@
       .fm-close { right: 20px; }
 
       .pillar-row { grid-template-columns: 44px 1fr; grid-template-rows: auto auto auto; gap: 6px 18px; }
-      .p-desc { grid-column: 2; }
+      .p-desc  { grid-column: 2; }
       .p-tag-w { grid-column: 2; justify-content: flex-start; margin-top: 4px; }
 
       .fg-2 { grid-template-columns: 1fr; gap: 0; }
       footer { padding: 32px 24px; grid-template-columns: 1fr; gap: 16px; }
       .foot-soc { justify-content: flex-start; }
+
+      .flotte-head { padding: 56px 24px 48px; }
+      .fleet-scroll { padding: 0 24px; }
+      .fleet-card { flex: 0 0 260px; height: 360px; }
+
+      .founder-photo { aspect-ratio: 1 / 1; }
     }
   </style>
 </head>
@@ -858,10 +948,11 @@
   <div class="fm-logo">KEY<i>PASS</i></div>
   <button class="fm-close" id="fm-close" aria-label="Menü schließen">✕</button>
   <div class="fm-links">
-    <a href="#konzept"   onclick="closeMenu()">Konzept</a>
+    <a href="#konzept"    onclick="closeMenu()">Konzept</a>
+    <a href="#flotte"     onclick="closeMenu()">Flotte</a>
     <a href="#membership" onclick="closeMenu()">Membership</a>
-    <a href="#garage"    onclick="closeMenu()">Garage</a>
-    <a href="#waitlist"  onclick="closeMenu()">Kontakt</a>
+    <a href="#founder"    onclick="closeMenu()">Über uns</a>
+    <a href="#waitlist"   onclick="closeMenu()">Kontakt</a>
   </div>
   <div class="fm-bottom">
     <a href="#waitlist" class="fm-cta" onclick="closeMenu()">
@@ -877,12 +968,10 @@
 
 <!-- ═══ HERO ═══════════════════════════════════════════ -->
 <section id="hero">
-  <!-- Background image — place your Porsche 911 photo as hero-car.jpg -->
   <div class="hero-bg-fallback" aria-hidden="true"></div>
   <div class="hero-bg" id="hero-bg" aria-hidden="true"></div>
   <div class="hero-overlay" aria-hidden="true"></div>
 
-  <!-- Top bar -->
   <div class="hero-topbar">
     <a href="#" class="hero-logo">KEY<i>PASS</i></a>
     <button class="ham-btn" id="ham-btn" aria-label="Menü öffnen" aria-expanded="false" aria-controls="fullmenu">
@@ -890,7 +979,6 @@
     </button>
   </div>
 
-  <!-- Centered content -->
   <div class="hero-content">
     <span class="hero-eyebrow">Premium Automotive Membership</span>
     <h1 class="hero-h1">
@@ -911,7 +999,6 @@
     </div>
   </div>
 
-  <!-- Bottom bar -->
   <div class="hero-bottom" aria-hidden="true">
     <span class="hero-tagline">One key. Every drive.</span>
     <span class="hero-scroll">
@@ -931,22 +1018,22 @@
     <span>Every Drive</span><span class="hi">·</span>
     <span>KEYPASS</span><span class="hi">·</span>
     <span>Premium Membership</span><span class="hi">·</span>
-    <span>Munich 2025</span><span class="hi">·</span>
+    <span>Mainz 2026</span><span class="hi">·</span>
     <span>One Key</span><span class="hi">·</span>
     <span>Every Drive</span><span class="hi">·</span>
     <span>KEYPASS</span><span class="hi">·</span>
     <span>Premium Membership</span><span class="hi">·</span>
-    <span>Munich 2025</span><span class="hi">·</span>
+    <span>Mainz 2026</span><span class="hi">·</span>
     <span>One Key</span><span class="hi">·</span>
     <span>Every Drive</span><span class="hi">·</span>
     <span>KEYPASS</span><span class="hi">·</span>
     <span>Premium Membership</span><span class="hi">·</span>
-    <span>Munich 2025</span><span class="hi">·</span>
+    <span>Mainz 2026</span><span class="hi">·</span>
     <span>One Key</span><span class="hi">·</span>
     <span>Every Drive</span><span class="hi">·</span>
     <span>KEYPASS</span><span class="hi">·</span>
     <span>Premium Membership</span><span class="hi">·</span>
-    <span>Munich 2025</span><span class="hi">·</span>
+    <span>Mainz 2026</span><span class="hi">·</span>
   </div>
 </div>
 
@@ -967,8 +1054,8 @@
       <dt class="stat-lbl">Membership Tiers</dt>
     </div>
     <div class="stat r d2">
-      <dd class="stat-n"><span class="count" data-target="1">0</span></dd>
-      <dt class="stat-lbl">Stadt zum Start</dt>
+      <dd class="stat-n"><span class="count" data-target="6">0</span></dd>
+      <dt class="stat-lbl">Fahrzeuge zum Start</dt>
     </div>
     <div class="stat r d3">
       <dd class="stat-n">∞</dd>
@@ -1021,6 +1108,85 @@
     <span class="stmt-line r">Ein Schlüssel.</span>
     <span class="stmt-line accent r d1">Jede Möglichkeit.</span>
     <p class="stmt-sub r d2">KEYPASS — Mainz, 2026</p>
+  </div>
+</section>
+
+
+<!-- ═══ FLOTTE ═════════════════════════════════════════ -->
+<section id="flotte">
+  <div class="flotte-head">
+    <div>
+      <span class="sec-eyebrow r">Die Flotte</span>
+      <h2 class="sec-h2 r d1">Handverlesen.<br>Unverwechselbar.</h2>
+    </div>
+    <span class="flotte-hint r d2">
+      <svg viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M1 8h22M16 2l6 6-6 6"/>
+      </svg>
+      Scrollen
+    </span>
+  </div>
+
+  <div class="fleet-scroll" id="fleet-scroll">
+    <div class="fleet-card r">
+      <div class="fleet-card-img" style="background-image:url('car1.jpg')"></div>
+      <div class="fleet-card-overlay"></div>
+      <div class="fleet-card-info">
+        <span class="fleet-car-number">01 / 06</span>
+        <h3 class="fleet-car-name">Porsche 911<br>Carrera 4S</h3>
+        <p class="fleet-car-spec">450 PS &nbsp;·&nbsp; PDK &nbsp;·&nbsp; 2023</p>
+      </div>
+    </div>
+
+    <div class="fleet-card r d1">
+      <div class="fleet-card-img" style="background-image:url('car2.jpg')"></div>
+      <div class="fleet-card-overlay"></div>
+      <div class="fleet-card-info">
+        <span class="fleet-car-number">02 / 06</span>
+        <h3 class="fleet-car-name">Porsche Cayman<br>GT4</h3>
+        <p class="fleet-car-spec">425 PS &nbsp;·&nbsp; 6-Gang &nbsp;·&nbsp; 2022</p>
+      </div>
+    </div>
+
+    <div class="fleet-card r d2">
+      <div class="fleet-card-img" style="background-image:url('car3.jpg')"></div>
+      <div class="fleet-card-overlay"></div>
+      <div class="fleet-card-info">
+        <span class="fleet-car-number">03 / 06</span>
+        <h3 class="fleet-car-name">Porsche Taycan<br>Turbo S</h3>
+        <p class="fleet-car-spec">761 PS &nbsp;·&nbsp; Dual Motor &nbsp;·&nbsp; 2024</p>
+      </div>
+    </div>
+
+    <div class="fleet-card r d3">
+      <div class="fleet-card-img" style="background-image:url('car4.jpg')"></div>
+      <div class="fleet-card-overlay"></div>
+      <div class="fleet-card-info">
+        <span class="fleet-car-number">04 / 06</span>
+        <h3 class="fleet-car-name">BMW M3<br>Touring</h3>
+        <p class="fleet-car-spec">510 PS &nbsp;·&nbsp; xDrive &nbsp;·&nbsp; 2023</p>
+      </div>
+    </div>
+
+    <div class="fleet-card r d4">
+      <div class="fleet-card-img" style="background-image:url('car5.jpg')"></div>
+      <div class="fleet-card-overlay"></div>
+      <div class="fleet-card-info">
+        <span class="fleet-car-number">05 / 06</span>
+        <h3 class="fleet-car-name">Mercedes-AMG<br>GT S</h3>
+        <p class="fleet-car-spec">522 PS &nbsp;·&nbsp; Handschalter &nbsp;·&nbsp; 2022</p>
+      </div>
+    </div>
+
+    <div class="fleet-card r d4">
+      <div class="fleet-card-img" style="background-image:url('car6.jpg')"></div>
+      <div class="fleet-card-overlay"></div>
+      <div class="fleet-card-info">
+        <span class="fleet-car-number">06 / 06</span>
+        <h3 class="fleet-car-name">Audi RS6 Avant<br>Performance</h3>
+        <p class="fleet-car-spec">630 PS &nbsp;·&nbsp; quattro &nbsp;·&nbsp; 2023</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1090,6 +1256,36 @@
 </section>
 
 
+<!-- ═══ FOUNDER ════════════════════════════════════════ -->
+<section id="founder" class="section">
+  <div class="founder-inner">
+    <div class="founder-photo r">
+      <div class="founder-placeholder" id="founder-placeholder">
+        <div class="founder-placeholder-txt">Foto einfügen<br>founder.jpg<br>in Ordner legen</div>
+      </div>
+      <div class="founder-img-inner" id="founder-img-inner"></div>
+    </div>
+    <div class="founder-text">
+      <span class="founder-eyebrow r">Über den Gründer</span>
+      <blockquote class="founder-quote r d1">
+        „Ich wollte keinen Fuhrpark kaufen. Ich wollte fahren —
+        und das für andere möglich machen, die das genauso empfinden."
+      </blockquote>
+      <p class="founder-bio r d2">
+        KEYPASS entstand aus einer einfachen Beobachtung: Die besten Autos stehen zu oft still, während die besten Fahrer zu selten fahren. Kein Mietservice, kein Carsharing — ein Club. Gegründet für Menschen, die Automobile nicht besitzen, sondern verstehen wollen.
+      </p>
+      <div class="founder-sig r d3">
+        <span class="founder-sig-line"></span>
+        <div>
+          <p class="founder-name">Niclas Bieser</p>
+          <p class="founder-role">Founder &amp; CEO, KEYPASS</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <!-- ═══ GARAGE ═════════════════════════════════════════ -->
 <section id="garage">
   <div class="garage-vis" aria-hidden="true">
@@ -1099,7 +1295,7 @@
   <div class="garage-copy">
     <span class="sec-eyebrow r">Die Garage</span>
     <blockquote class="garage-q r d1">
-      "Ein Raum, der nach Benzin, Leder und Möglichkeiten riecht."
+      "Ein Schlüssel. Ein Raum."
     </blockquote>
     <p class="garage-body r d2">Die KEYPASS Garage ist kein Showroom. Sie ist der dritte Ort — zwischen Arbeit und Zuhause, zwischen Alltag und Adrenalin. Industrial verarbeitet, handverlesen bestückt.</p>
     <p class="garage-body r d2">Mitglieder haben Zugang zu kuratierten Fahrzeugen, privaten Stellplätzen und einem Netzwerk Gleichgesinnter. Kein Termin. Kein Tourismus.</p>
@@ -1107,7 +1303,7 @@
       <div class="spec">Ausschließlich für verifizierte Mitglieder</div>
       <div class="spec">Kuratierter Fahrzeugbestand — monatlich rotiert</div>
       <div class="spec">Werkstatt, Lounge &amp; Event-Space</div>
-      <div class="spec">Startstadt: München — Q4 2025</div>
+      <div class="spec">Startstadt: Mainz — 2026</div>
     </div>
   </div>
 </section>
@@ -1193,7 +1389,7 @@
 <!-- ═══ FOOTER ═════════════════════════════════════════ -->
 <footer>
   <div class="foot-logo">KEY<i>PASS</i></div>
-  <p class="foot-copy">&copy; 2025 KEYPASS &mdash; One key. Every drive.</p>
+  <p class="foot-copy">&copy; 2026 KEYPASS &mdash; One key. Every drive.</p>
   <nav class="foot-soc" aria-label="Social">
     <a href="#" aria-label="Instagram">Instagram</a>
     <a href="#" aria-label="LinkedIn">LinkedIn</a>
@@ -1204,14 +1400,61 @@
 
 <!-- ═══ JS ═════════════════════════════════════════════ -->
 <script>
-  /* ── Hero image ── try to load hero-car.jpg, fade in if exists */
+  /* ── Hero image ── */
   const heroBg = document.getElementById('hero-bg');
   const testImg = new Image();
   testImg.onload = () => {
     heroBg.style.backgroundImage = "url('PCGB21_1359.jpg')";
-    setTimeout(() => heroBg.classList.add('loaded'), 100);
+    setTimeout(() => heroBg.classList.add('loaded'), 60);
   };
   testImg.src = 'PCGB21_1359.jpg';
+
+  /* ── Hero parallax on scroll ── */
+  const heroEl = document.getElementById('hero');
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const h = heroEl.offsetHeight;
+        if (y < h) {
+          heroBg.style.transform = `scale(1.08) translateY(${y * 0.22}px)`;
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  /* ── Founder image ── */
+  const founderInner = document.getElementById('founder-img-inner');
+  const founderPh    = document.getElementById('founder-placeholder');
+  const founderTest  = new Image();
+  founderTest.onload = () => {
+    founderInner.style.backgroundImage = "url('founder.jpg')";
+    founderInner.style.opacity = '1';
+    if (founderPh) founderPh.style.display = 'none';
+  };
+  founderInner.style.opacity = '0';
+  founderInner.style.transition = 'opacity 1s ease';
+  founderTest.src = 'founder.jpg';
+
+  /* ── Fleet scroll — drag to scroll ── */
+  const fleetEl = document.getElementById('fleet-scroll');
+  let isDown = false, startX, scrollLeft;
+  fleetEl.addEventListener('mousedown', e => {
+    isDown = true;
+    startX = e.pageX - fleetEl.offsetLeft;
+    scrollLeft = fleetEl.scrollLeft;
+  });
+  fleetEl.addEventListener('mouseleave', () => { isDown = false; });
+  fleetEl.addEventListener('mouseup',    () => { isDown = false; });
+  fleetEl.addEventListener('mousemove',  e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - fleetEl.offsetLeft;
+    fleetEl.scrollLeft = scrollLeft - (x - startX) * 1.4;
+  });
 
   /* ── Hamburger / Fullscreen menu ── */
   const hamBtn  = document.getElementById('ham-btn');
@@ -1260,7 +1503,7 @@
   document.querySelectorAll('.count').forEach(el => co.observe(el));
 
   /* ── Form ── */
-  const form = document.getElementById('wl-form');
+  const form   = document.getElementById('wl-form');
   const formOk = document.getElementById('form-ok');
   const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
@@ -1282,19 +1525,19 @@
           em=document.getElementById('em'), veh=document.getElementById('veh'),
           tier=form.querySelector('input[name="tier"]:checked'),
           tierErr=document.getElementById('tier-err');
-    let ok=true;
+    let ok = true;
     if (!fn.value.trim())          { setErr(fn,'fn-err',true);  ok=false; } else setErr(fn,'fn-err',false);
     if (!ln.value.trim())          { setErr(ln,'ln-err',true);  ok=false; } else setErr(ln,'ln-err',false);
     if (!isEmail(em.value.trim())) { setErr(em,'em-err',true);  ok=false; } else setErr(em,'em-err',false);
     if (!veh.value)                { setErr(veh,'veh-err',true);ok=false; } else setErr(veh,'veh-err',false);
     tierErr.style.display = tier ? 'none' : 'block';
-    if (!tier) ok=false;
+    if (!tier) ok = false;
     if (!ok) return;
     form.style.cssText = 'opacity:0;transition:opacity 0.4s ease;pointer-events:none;';
     setTimeout(() => {
-      form.style.display='none';
+      form.style.display = 'none';
       formOk.classList.add('show');
-      requestAnimationFrame(()=>requestAnimationFrame(()=>formOk.classList.add('fade')));
+      requestAnimationFrame(() => requestAnimationFrame(() => formOk.classList.add('fade')));
     }, 420);
   });
 </script>
